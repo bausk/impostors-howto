@@ -8,9 +8,9 @@ This is a collection of notes that I try to take when researching a software eng
 
 The notes are usually made with internal usage in mind to alleviate my poor memory and therefore tend to be exceedingly laconic. Use at your own dicretion.
 
-## Reading Notes
+## Foundational Reading
 
-Notes that materialize my takeaways from reading other people's works (books, posts, and whitepapers) are in [Laconic](https://github.com/bausk/laconic), a sister repository.
+* [Laconic](https://github.com/bausk/laconic) Notes that materialize my takeaways from reading other people's works (books, posts, and whitepapers)
 
 ## 1. DevOps and Deployment
 
@@ -18,4 +18,8 @@ Notes that materialize my takeaways from reading other people's works (books, po
 
 ## 2. Concurrency and Execution Models
 
-* [repo for `asyncio` Seminar given at Webinerds in Dnipro, 2018](https://github.com/bausk/seminar2018)
+* [`asyncio` Seminar given at Webinerds in Dnipro, 2018](https://github.com/bausk/seminar2018)
+
+## 3. Machine Learning
+
+* TBA
