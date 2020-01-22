@@ -102,6 +102,7 @@ Since we can run arbitrary commands with a Docker container and node_modules is 
 
 ``` bash
 docker-compose stop build
-docker-compos run build bash -c "yarn add @csstools/postcss-sass --dev"
+docker-compos run build bash -c "yarn add @csstools/postcss-sass --dev" [4]
 docker-compose stop start
 ```
+[4] See https://marmelab.com/blog/2017/02/08/yarn-npm-install-within-docker-container.html
