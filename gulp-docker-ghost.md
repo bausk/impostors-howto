@@ -1,4 +1,4 @@
-# Impostor's Howto #2: Setting Up Docker-based Frontend Development
+# Impostor's Howto #2: Setting Up Frontend Development
 
 ## Problem
 
@@ -110,7 +110,7 @@ installing a package requires, as an example:
 λ docker-compos run build bash -c "yarn add tachyons-sass --dev"  # [4]
 λ docker-compose stop start
 ```
-[4] See https://marmelab.com/blog/2017/02/08/yarn-npm-install-within-docker-container.html
+- [4] See https://marmelab.com/blog/2017/02/08/yarn-npm-install-within-docker-container.html
 
 ### Connect Tooling: SASS
 
@@ -127,10 +127,12 @@ function css(done) {
         easyimport,
         customProperties({preserve: false}),
         colorFunction(),
+        // Relevant part [5]
         sass({
             includePaths: ['node_modules']
           }),
         // tailwind(), // Used to try connecting tachyons here, not anymore!
+        // end of relevant part
         autoprefixer(),
         cssnano()
     ];
@@ -141,4 +143,20 @@ function css(done) {
         livereload()
     ], handleError(done));
 }    
+```
+
+- [5] [Stolen off Stackoverflow](https://stackoverflow.com/questions/44551822/import-css-from-node-modules-using-gulp-sass/44551823), I need SASS to be able to see installed node_modules to do the following.
+
+Now we can include SASS sources in our CSS which is so far plain PostCSS:
+
+``` css
+/* in ./assets/css/screen.css, my CSS assembly file */
+@import "../sass/_global.scss";
+@import "../sass/_highlight.scss";
+@import "../sass/_post.scss";
+@import "../sass/_tachyons.scss";
+```
+``` css
+/* in ./assets/sass/_tachyons.scss */
+@import "../node_modules/tachyons-sass/tachyons.scss";
 ```
