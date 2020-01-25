@@ -26,9 +26,11 @@ ssh-add -- < /mnt/c/Users/bausk/.ssh/id_rsa
 
 I install pyenv on both host Windows 10 machine and the WSL.
 
-```
+``` bash
+# On WSL / WSL2:
 sudo apt update
 sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget
+pip3 install pyenv # pip should be installed on WSL
 ```
 
 
