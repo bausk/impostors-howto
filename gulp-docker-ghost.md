@@ -129,7 +129,7 @@ function css(done) {
         colorFunction(),
         // Relevant part [5]
         sass({
-            includePaths: ['node_modules']
+            includePaths: ['node_modules', 'assets/css/*.scss', 'assets/sass/*.scss'] // [6]
           }),
         // tailwind(), // Used to try connecting tachyons here, not anymore!
         // end of relevant part
@@ -145,7 +145,10 @@ function css(done) {
 }    
 ```
 
-- [5] [Stolen off Stackoverflow](https://stackoverflow.com/questions/44551822/import-css-from-node-modules-using-gulp-sass/44551823), I need SASS to be able to see installed node_modules to do the following.
+- [5] [Stolen off Stackoverflow](https://stackoverflow.com/questions/44551822/import-css-from-node-modules-using-gulp-sass/44551823), I need SASS to be able to see installed node_modules to be able to include SCSS from NPM modules, as shown below.
+
+- [6] I also have to include the actual sources here because including them in `src(...)` later on will break the PostCSS build. I haven't found a better solution for now.
+
 
 Now we can include SASS sources in our CSS which is so far plain PostCSS:
 
@@ -159,4 +162,28 @@ Now we can include SASS sources in our CSS which is so far plain PostCSS:
 ``` css
 /* in ./assets/sass/_tachyons.scss */
 @import "../node_modules/tachyons-sass/tachyons.scss";
+```
+
+The default theme uses CSS only so I need to add another file watcher to be able to reload SASS changes:
+``` js
+const sassWatcher = () => watch('assets/sass/**', css);
+const watcher = parallel(cssWatcher, sassWatcher, hbsWatcher);
+```
+
+Now I can fully enjoy SASS, Tachyons-SASS and PostCSS being built into screen.css (and other files, should I choose to split styles into page-specific files) and do the following, among other things:
+
+``` scss
+// in _navbar.scss, I collect Tachyons elements into one class
+.navbar-button {
+    @extend .dim;
+    @extend .tracked-light;
+    @extend .ttu;
+    @extend .near-black;
+    @extend .f6-l;
+    @extend .f7;
+```
+
+``` html
+<a class="navbar-button"
+      href="/blog">Blog</a>
 ```
