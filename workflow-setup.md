@@ -16,6 +16,8 @@ Run `nano ~/.bashrc` and add at the end of file:
 ```
 eval $(ssh-agent -s)
 ssh-add ~/.ssh/id_rsa
+# or, if you want to import from Windows host
+ssh-add -- < /mnt/c/Users/bausk/.ssh/id_rsa
 ```
 
 `Ctrl+X` To exit, `y` to save changes
