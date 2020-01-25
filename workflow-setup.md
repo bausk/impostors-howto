@@ -20,6 +20,16 @@ ssh-add ~/.ssh/id_rsa
 
 `Ctrl+X` To exit, `y` to save changes
 
+## Setting up Python development
+
+I install pyenv on both host Windows 10 machine and the WSL.
+
+```
+sudo apt update
+sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget
+```
+
+
 ## Debugging any script with Visual Studio Code
 
 ```
