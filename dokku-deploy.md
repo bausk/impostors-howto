@@ -52,4 +52,9 @@ dokku tags:deploy <APPNAME> latest
 dokku letsencrypt <APPNAME>
 dokku config:set --no-restart <APPNAME> DOKKU_LETSENCRYPT_EMAIL=<EMAIL>
 dokku letsencrypt <APPNAME>
+dokku checks:enable <APPNAME>
 ```
+
+#### Notes:
+
+- This process is amalgamation of [setting up Ghost from source](https://medium.com/koaandco/running-ghost-on-dokku-paas-3ee95dcf3559) (for security and MariaDB) and [setting up from ready-made image](https://matthisk.com/running-ghost-publishing-on-dokku/) (for repo-less deployment from image, better variable explanation and theme persistence).
