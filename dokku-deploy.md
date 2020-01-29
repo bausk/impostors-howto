@@ -48,6 +48,11 @@ dokku --no-restart config:set <APPNAME> url=https://<DOMAIN>
 dokku proxy:ports-add <APPNAME> http:80:2368
 dokku storage:mount <APPNAME> /opt/<APPNAME>/ghost/content:/var/lib/ghost/content
 sudo mkdir -p /opt/<APPNAME>/ghost/content
+sudo touch /home/dokku/<APPNAME>/nginx.conf.d/upload.conf
+sudo chown dokku /home/dokku/<APPNAME>/nginx.conf.d/upload.conf
+sudo chgrp dokku /home/dokku/<APPNAME>/nginx.conf.d/upload.conf
+sudo chmod 666 /home/dokku/<APPNAME>/nginx.conf.d/upload.conf
+echo 'client_max_body_size 50M;' > /home/dokku/<APPNAME>/nginx.conf.d/upload.conf
 dokku tags:deploy <APPNAME> latest
 dokku letsencrypt <APPNAME>
 dokku config:set --no-restart <APPNAME> DOKKU_LETSENCRYPT_EMAIL=<EMAIL>
