@@ -1,7 +1,7 @@
 ``` bash
 dokku apps:create <APPNAME>
-docker pull ghost:latest
-docker tag ghost:latest dokku/<APPNAME>:latest
+sudo docker pull ghost:latest
+sudo docker tag ghost:latest dokku/<APPNAME>:latest
 dokku checks:disable <APPNAME>
 dokku domains:add <APPNAME> <DOMAIN>
 dokku mariadb:create <APPNAMEDB>
@@ -17,4 +17,5 @@ dokku tags:deploy <APPNAME> latest
 dokku letsencrypt <APPNAME>
 dokku config:set --no-restart <APPNAME> DOKKU_LETSENCRYPT_EMAIL=<EMAIL>
 dokku letsencrypt <APPNAME>
+dokku checks:enable <APPNAME>
 ```
