@@ -1,5 +1,11 @@
 # Web Development Workflow Setup (Windows 10)
 
+# Windows Gotchas
+
+- Project files should be located on a native **WSL2 filesystem**. If no WSL2 is installed, keep them on Windows. The reason for this is that WSL 2 will follow through with file changes for (most) build watchers and WSL1 won't properly mount files on Windows filesystem.
+- All docker-compose operations should preferably be started from a **WSL2 shell**. If no WSL2 is installed, then from **Windows shell** on runtime and WSL on build.
+
+
 ## WSL 2
 
 You can work on WSL v.1 or switch to WSL 2.
