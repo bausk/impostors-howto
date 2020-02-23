@@ -8,7 +8,7 @@ dokku mariadb:create <APPNAMEDB>
 dokku mariadb:link <APPNAMEDB> <APPNAME>
 dokku config:get <APPNAME> DATABASE_URL
 dokku config:set --no-restart <APPNAME> database__connection__user=mariadb \
-    database__client: mysql
+    database__client=mysql \
     database__connection__password=<PWD> database__connection__host=dokku-mariadb-<APPNAMEDB> \
     database__connection__database=<APPNAMEDB> \
 dokku --no-restart config:set <APPNAME> url=https://<DOMAIN>
