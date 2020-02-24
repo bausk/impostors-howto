@@ -1,0 +1,42 @@
+version: '3.3'
+
+services:
+  redis:
+    image: redis:3.2-alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+  dynamodb:
+    image: dwmkerr/dynamodb
+    ports:
+      - "3000:8000"
+    volumes:
+      - dynamodb_data:/data
+  celery: &base_config
+    build:
+      context: nubo-async-cfe-services
+      dockerfile: Dockerfile
+    environment:
+    - REDIS_HOST=redis
+    - PYTHONUNBUFFERED=0
+    - CC_DYNAMODB_NAMESPACE=None
+    - CC_DYNAMODB_ACCESS_KEY_ID=anything
+    - CC_DYNAMODB_SECRET_ACCESS_KEY=anything
+    - CC_DYNAMODB_HOST=dynamodb
+    - CC_DYNAMODB_PORT=8000
+    - CC_DYNAMODB_IS_SECURE=False
+    command: celery worker -A tasks.async_service -Q dynamo-queue -E --loglevel=ERROR
+    depends_on:
+    - redis
+    - dynamodb
+    volumes:
+    - .:/jobs
+  jobs:
+    <<: *base_config
+    command: bash -c "uwsgi --socket 0.0.0.0:8080 --protocol=http --wsgi-file nubo_async/wsgi.py"
+    ports:
+      - "9090:8080"
+volumes:
+  redis_data:
+  dynamodb_data:
