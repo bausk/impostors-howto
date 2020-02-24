@@ -30,8 +30,8 @@ Assuming the above conditions are met, this is relatively straightforward. I nee
 
 ``` bash
 dokku apps:create <APPNAME>
-docker pull ghost:latest
-docker tag ghost:latest dokku/<APPNAME>:latest
+sudo docker pull ghost:latest
+sudo docker tag ghost:latest dokku/<APPNAME>:latest
 dokku checks:disable <APPNAME>
 dokku domains:add <APPNAME> <DOMAIN>
 dokku mariadb:create <APPNAMEDB>
@@ -39,13 +39,17 @@ dokku mariadb:link <APPNAMEDB> <APPNAME>
 dokku config:get <APPNAME> DATABASE_URL
 ```
 
-The input of the last command should give, amond other stuff, <PWD> to put into the following command:
+The input of the last command should give, amond other stuff, <PWD> to put into the following commands:
 
 ``` bash
-dokku config:set --no-restart <APPNAME> database__connection__user=mariadb database__connection__password=<PWD> database__connection__host=dokku-mariadb-<APPNAMEDB>
-database__connection__database=<APPNAMEDB>
-dokku --no-restart config:set <APPNAME> url=https://<DOMAIN>
-dokku proxy:ports-add <APPNAME> http:80:2368
+dokku config:set --no-restart <APPNAME> # Will fail; handy to repeat commands by history
+dokku config:set --no-restart <APPNAME> database__client=mysql
+dokku config:set --no-restart <APPNAME> database__connection__user=mariadb
+dokku config:set --no-restart <APPNAME> database__connection__password=<PWD>
+dokku config:set --no-restart <APPNAME> database__connection__host=dokku-mariadb-<APPNAMEDB>
+dokku config:set --no-restart <APPNAME> database__connection__database=<APPNAMEDB>
+dokku config:set --no-restart <APPNAME> url=https://<DOMAIN>
+dokku proxy:ports-add <APPNAME> http:80:2368 # https will be auto-added by letsencrypt
 dokku storage:mount <APPNAME> /opt/<APPNAME>/ghost/content:/var/lib/ghost/content
 sudo mkdir -p /opt/<APPNAME>/ghost/content
 sudo touch /home/dokku/<APPNAME>/nginx.conf.d/upload.conf
@@ -54,7 +58,6 @@ sudo chgrp dokku /home/dokku/<APPNAME>/nginx.conf.d/upload.conf
 sudo chmod 666 /home/dokku/<APPNAME>/nginx.conf.d/upload.conf
 echo 'client_max_body_size 50M;' > /home/dokku/<APPNAME>/nginx.conf.d/upload.conf
 dokku tags:deploy <APPNAME> latest
-dokku letsencrypt <APPNAME>
 dokku config:set --no-restart <APPNAME> DOKKU_LETSENCRYPT_EMAIL=<EMAIL>
 dokku letsencrypt <APPNAME>
 dokku checks:enable <APPNAME>
