@@ -8,9 +8,11 @@ This is a collection of notes that I try to take when researching a software eng
 
 The notes are usually made with internal usage in mind to alleviate my poor memory and therefore tend to be exceedingly laconic. Use at your own dicretion.
 
-## Foundational Reading
+## Foundational Reading - Abridged Notes
 
-* [Laconic](https://github.com/bausk/laconic) Notes that materialize my takeaways from reading other people's works (books, posts, and whitepapers)
+- [Designing Data-Intensive Applications: Abridged Notes](https://gist.github.com/bausk/f45d9ca836e0a3d623d3ae2389ec5eac)
+
+- [Clean Code (2017 short notes)](https://gist.github.com/bausk/0b0723bd8e1193c1342e658771a002cf)
 
 ## 1. DevOps and Deployment
 
