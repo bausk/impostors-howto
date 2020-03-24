@@ -30,11 +30,10 @@ sudo dokku plugin:install https://gitlab.com/notpushkin/dokku-monorepo
 sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
 ```
 
-### Services creation you might need
 
 ## Main Track
 
-### Creating New
+### Creating new app
 
 On the Dokku host, start with application creation and fill out build-time variables:
 
