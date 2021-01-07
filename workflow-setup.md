@@ -6,11 +6,7 @@
 - All docker-compose operations should preferably be started from a **WSL2 shell**. If no WSL2 is installed, then from **Windows shell** on runtime and WSL on build.
 
 
-## WSL 2
-
-You can work on WSL v.1 or switch to WSL 2.
-
-## Setting up WSL
+## Set up WSL
 
 Generate SSH key:
 ```
@@ -28,19 +24,32 @@ ssh-add -- < /mnt/c/Users/bausk/.ssh/id_rsa
 
 `Ctrl+X` To exit, `y` to save changes
 
-## Setting up Python development
+## Set Up Python Development
 
-I install pyenv on both host Windows 10 machine and the WSL.
+1. Install `pyenv` on WSL.
 
 ``` bash
-# On WSL / WSL2:
-sudo apt update
-sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget
-pip3 install pyenv # pip should be installed on WSL
+# Install pyenv with instructions from https://github.com/pyenv/pyenv-installer, currently:
+sudo apt update && sudo apt install -y build-essential git libexpat1-dev libssl-dev zlib1g-dev libncurses5-dev libbz2-dev liblzma-dev libsqlite3-dev libffi-dev tcl-dev linux-headers-generic libgdbm-dev libreadline-dev tk tk-dev
+curl https://pyenv.run | bash
+# Complete installation by following CLI instructions
+pyenv install 3.9.1
+pyenv global 3.9.1
+
 ```
 
+## Set Up Node.js Development
 
-## Debugging any script with Visual Studio Code
+1. Install nvm, node, and yarn on WSL
+
+``` bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+nvm install node
+nvm use node
+npm install -g yarn
+```
+
+## Debug with Visual Studio Code
 
 ```
 TBA
