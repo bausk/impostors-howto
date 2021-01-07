@@ -24,6 +24,34 @@ ssh-add -- < /mnt/c/Users/bausk/.ssh/id_rsa
 
 `Ctrl+X` To exit, `y` to save changes
 
+## Set Up Windows Terminal
+
+Install your preferred fonts. My current choice is [Iosevka SS05 Term](https://github.com/be5invis/Iosevka/releases), a very narrow but very readable font with Fira Mono punctuation style and ligatures.
+
+In Windows Terminal Settings, replace the Powershell block with Gitbash shell:
+```
+{
+  // Make changes here to the powershell.exe profile.
+  "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+  "name": "Gitbash",
+  "commandline": "%PROGRAMFILES%/git/usr/bin/bash.exe -i -l",
+  "hidden": false
+},
+```
+
+In the same settings file, add defaults and list clauses to support your font of choice, in my particular case:
+
+```
+"defaults":
+{
+    // Put settings here that you want to apply to all profiles.
+    "fontFace": "Iosevka Term SS05",
+    "fontSize": 12
+},
+"list":
+...
+```
+
 ## Set Up Python Development
 
 1. Install `pyenv` on WSL.
