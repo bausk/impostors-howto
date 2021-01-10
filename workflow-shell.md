@@ -16,6 +16,10 @@ ls -al
 
 `ssh -R 80:localhost:8000 serveo.net`
 
+Get private key fingerprint to compare against Github uploaded SSH keys fingerprints:
+
+`ssh-keygen -ef ~/.ssh/id_rsa -m PEM | openssl rsa -RSAPublicKey_in -outform DER | openssl md5 -c`
+
 ### Docker quicklaunches
 
 `docker run --rm --name pg-docker2 -e POSTGRES_PASSWORD=docker2 -d -p 5433:5432 -v //d/docker:/var/lib/postgresql/data postgres`
