@@ -1,3 +1,37 @@
+This collects processes and gotchas on deploying Python and React applications and Postgres/TimescaleDB/MariaDB databases to a Dokku server.
+
+# Installing Dokku
+
+1. Check that you have the private certificate that your remote machine has set up for SSH access.
+
+2. Log into the remote machine (AWS uses ubuntu as default username):
+
+```
+ssh ubuntu@domain.name
+# or, to support a custom private key
+ssh -i ~/.ssh/customfile ubuntu@domain.name
+```
+
+3. Install Dokku (from [Official docs](http://dokku.viewdocs.io/dokku/getting-started/installation/)):
+
+```
+# As of 2021, check link for most current version code
+wget https://raw.githubusercontent.com/dokku/dokku/v0.19.13/bootstrap.sh;
+sudo DOKKU_TAG=v0.19.13 bash bootstrap.sh
+````
+
+4. Install some plugins (check for changes on their official homepages):
+
+Plugins enable Dokku to provide various services to deployed applications, for example databases, HTTPS certificates, and more complex deployment processes like deploying a subfolder from a monorepo.
+
+```
+# Letsencrypt
+sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+# MariaDB plugin: a drop-in replacement for MySQL, for example used by the Ghost blog engine
+sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
+sudo dokku plugin:install https://gitlab.com/notpushkin/dokku-monorepo
+```
+
 # Dokku deployment
 
 ### Routing and domains
