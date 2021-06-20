@@ -1,6 +1,8 @@
+# Working with Environments Deployed on Dokku
+
 This collects processes and gotchas on deploying Python and React applications and Postgres/TimescaleDB/MariaDB databases to a Dokku server.
 
-# Installing Dokku
+## Installing Dokku
 
 1. Check that you have the private certificate that your remote machine has set up for SSH access.
 
@@ -32,7 +34,33 @@ sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 sudo dokku plugin:install https://gitlab.com/notpushkin/dokku-monorepo
 ```
 
-# Dokku deployment
+## Dokku deployment
+
+## Main Track
+
+### Creating new app
+
+On the Dokku host, start with application creation and fill out build-time variables:
+
+``` bash
+dokku apps:create <APPNAME>
+dokku docker-options:add <APPNAME> build '--build-arg env=production' # Docker build variables
+dokku docker-options:add <APPNAME> build '--build-arg POETRY_VERSION=1.0.5' # Docker build variables
+```
+
+### Sidetrack: connecting database
+
+``` bash
+dokku postgres:create <APPNAME>
+dokku postgres:link <APPNAME> <APPNAME>
+```
+
+### Setting up runtime variables
+
+``` bash
+dokku config:set <APPNAME> APP_SECRET_PRODUCTION=secret # Or whatever variables you need from .env
+dokku config:set trader-api-stage POETRY_VERSION=1.0.5
+```
 
 ### Routing and domains
 
@@ -70,14 +98,57 @@ git push APPNAME master
 
 3. Add https as described in Routing and Domains
 
-### Other Gotchas
+### Adding ports and domains
 
-- Deploy from monorepo:
+In Dokku SSH, add ports to connect to your app:
+
+``` bash
+dokku domains:add <APPNAME> DOMAINNAME
+dokku proxy:ports-add <APPNAME> http:80:5000
+```
+
+## Connecting Databases
+
+### Postgres
+
+Connect Postgres
+
+### TimescaleDB
+
+This also shows how to spin up a plugin-defined container with a custom image instead of the default Postgres image.
+
+1. Create Postgres database from a custom image:
+
+```
+export POSTGRES_IMAGE="timescale/timescaledb"
+export POSTGRES_IMAGE_VERSION="latest-pg12"
+dokku postgres:create testdb
+```
+
+2. Fix certificates issue [as described in the article](https://bausk.dev/a-practical-comparison-of-timescaledb-and-influxdb/).
+
+### MariaDB
+
+Connect MariaDB
+
+### Accessing database from pgAdmin
+
+## Deploying from Monorepo
 
 ```
 sudo dokku plugin:install https://gitlab.com/notpushkin/dokku-monorepo
+```
 
-# In .dokku-monorepo
+**In your repo**, assuming you want to deploy a service from directory `./<DIRNAME>`.
+
+In monorepo root, create a file named `.dokku-monorepo` and input your app name:
+
+```
+# project_root/.dokku-monorepo
+<APPNAME>=<DIRNAME>
+# For example
 appname1=path/to/source1
 appname2=path/to/source2
 ```
+
+Now add a new remote dokku@domain.name:<APPNAME>:<OPTIONAL_SUBDOMAIN> and push to it.
