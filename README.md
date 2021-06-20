@@ -37,6 +37,10 @@ All Python tutorials have the [onilapp example application](https://github.com/b
 
 - [Static Deploys](python_05_staticdeploys.md)
 
+### Deployment
+
+- [Deploying to Dokku](dokku.md)
+
 ### JAMStack
 
 After I was done with building an MVP with Dash in Python, I tried to split up the app components into a JAMStack architecture. The notes documenting this start here.
