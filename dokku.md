@@ -34,28 +34,39 @@ sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 sudo dokku plugin:install https://gitlab.com/notpushkin/dokku-monorepo
 ```
 
-## Dokku deployment
+# Dokku deployment
 
-## Main Track
+## Deploying a Dockerfile-based app
 
-### Creating new app
+1. Start with a [clean dokku install](http://dokku.viewdocs.io/dokku/getting-started/installation/).
+
+2. Set up new app and docker options for build:
+
+```
+dokku apps:create APPNAME
+dokku docker-options:add APPNAME build '--build-arg env=production'
+```
+
+3. Locally, add the dokku upstream:
+
+```
+git remote add APPNAME dokku@YOURDOMAIN.TLD:APPNAME
+git push APPNAME master
+```
+
+## Adding Docker build time variables
 
 On the Dokku host, start with application creation and fill out build-time variables:
 
 ``` bash
+# If app wasn't created in previous steps
 dokku apps:create <APPNAME>
+
 dokku docker-options:add <APPNAME> build '--build-arg env=production' # Docker build variables
 dokku docker-options:add <APPNAME> build '--build-arg POETRY_VERSION=1.0.5' # Docker build variables
 ```
 
-### Sidetrack: connecting database
-
-``` bash
-dokku postgres:create <APPNAME>
-dokku postgres:link <APPNAME> <APPNAME>
-```
-
-### Setting up runtime variables
+## Adding runtime variables
 
 ``` bash
 dokku config:set <APPNAME> APP_SECRET_PRODUCTION=secret # Or whatever variables you need from .env
@@ -72,33 +83,7 @@ dokku config:set trader-api-stage POETRY_VERSION=1.0.5
 
 3. `dokku letsencrypt someapp`
 
-### Deploying a Dockerfile-based app
-
-1. Start with a [clean dokku install](http://dokku.viewdocs.io/dokku/getting-started/installation/).
-
-2. Set up new app and docker options for build:
-
-```
-dokku apps:create APPNAME
-dokku docker-options:add APPNAME build '--build-arg env=production'
-```
-
-2. Add monorepo plugin if using monorepo:
-
-```
-sudo dokku plugin:install https://gitlab.com/notpushkin/dokku-monorepo
-```
-
-3. Locally, add the dokku upstream:
-
-```
-git remote add APPNAME dokku@YOURDOMAIN.TLD:APPNAME
-git push APPNAME master
-```
-
-3. Add https as described in Routing and Domains
-
-### Adding ports and domains
+## Adding ports and domains
 
 In Dokku SSH, add ports to connect to your app:
 
@@ -111,7 +96,12 @@ dokku proxy:ports-add <APPNAME> http:80:5000
 
 ### Postgres
 
-Connect Postgres
+Assuming plugin has been installed and application
+
+```
+dokku postgres:create <DBSERVICE>
+dokku postgres:link <DBSERVICE> <APPNAME>
+```
 
 ### TimescaleDB
 
