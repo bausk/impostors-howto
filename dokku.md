@@ -34,9 +34,9 @@ sudo dokku plugin:install https://github.com/dokku/dokku-mariadb.git mariadb
 sudo dokku plugin:install https://gitlab.com/notpushkin/dokku-monorepo
 ```
 
-# Dokku deployment
+## Dokku deployment
 
-## Deploying a Dockerfile-based app
+### Deploying a Dockerfile-based app
 
 1. Start with a [clean dokku install](http://dokku.viewdocs.io/dokku/getting-started/installation/).
 
@@ -54,7 +54,7 @@ git remote add APPNAME dokku@YOURDOMAIN.TLD:APPNAME
 git push APPNAME master
 ```
 
-## Adding Docker build time variables
+### Adding Docker build time variables
 
 On the Dokku host, start with application creation and fill out build-time variables:
 
@@ -66,7 +66,7 @@ dokku docker-options:add <APPNAME> build '--build-arg env=production' # Docker b
 dokku docker-options:add <APPNAME> build '--build-arg POETRY_VERSION=1.0.5' # Docker build variables
 ```
 
-## Adding runtime variables
+### Adding runtime variables
 
 ``` bash
 dokku config:set <APPNAME> APP_SECRET_PRODUCTION=secret # Or whatever variables you need from .env
@@ -83,7 +83,7 @@ dokku config:set trader-api-stage POETRY_VERSION=1.0.5
 
 3. `dokku letsencrypt someapp`
 
-## Adding ports and domains
+### Adding ports and domains
 
 In Dokku SSH, add ports to connect to your app:
 
@@ -92,9 +92,9 @@ dokku domains:add <APPNAME> DOMAINNAME
 dokku proxy:ports-add <APPNAME> http:80:5000
 ```
 
-## Connecting Databases
+### Connecting Databases
 
-### Postgres
+#### Postgres
 
 Assuming plugin has been installed and application
 
@@ -103,7 +103,7 @@ dokku postgres:create <DBSERVICE>
 dokku postgres:link <DBSERVICE> <APPNAME>
 ```
 
-### TimescaleDB
+#### TimescaleDB
 
 This also shows how to spin up a plugin-defined container with a custom image instead of the default Postgres image.
 
@@ -117,13 +117,34 @@ dokku postgres:create testdb
 
 2. Fix certificates issue [as described in the article](https://bausk.dev/a-practical-comparison-of-timescaledb-and-influxdb/).
 
-### MariaDB
+#### MariaDB
 
 Connect MariaDB
 
-### Accessing database from pgAdmin
+#### Accessing database from pgAdmin, CLI or other tools
 
-## Deploying from Monorepo
+Find out credentials and exposed port for your DB service:
+
+```
+dokku postgres:info <DBSERVICE>
+```
+
+If no port is exposed, expose any port from your database:
+
+```
+dokku postgres:expose <DBSERVICE>
+$ # Will print exposed port
+```
+
+Assuming working SSH access to dokku box, set up an SSH tunnel:
+
+```
+ssh -L 5433:localhost:<EXPOSED_PORT> ubuntu@domain.name
+```
+
+Now you can connect to your database via localhost:5433 and using the database credentials.
+
+### Deploying from Monorepo
 
 ```
 sudo dokku plugin:install https://gitlab.com/notpushkin/dokku-monorepo
